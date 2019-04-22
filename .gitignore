@@ -104,6 +104,9 @@ venv.bak/
 .mypy_cache/
 
 *.csv
+<<<<<<< HEAD
 
 *.ann
 
+=======
+>>>>>>> fa0e9a69833acd35dc8521b921cad9a6629f6921
