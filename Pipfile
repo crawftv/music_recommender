@@ -10,6 +10,9 @@ annoy = "*"
 fuzzywuzzy = {extras = ["speedup"],version = "*"}
 pandas = "*"
 flask = "*"
+boto3 = "*"
+python-dotenv = "*"
+python-decouple = "*"
 
 [requires]
 python_version = "3.6"
