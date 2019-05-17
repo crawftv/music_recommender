@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+	<head>
+<link rel="stylesheet" href="https://unpkg.com/picnic"> 
+	</head>
+
+	<body>
+	{% block content %}
+	
+	{% for p in playlist %}
+	
+	<p>{{p}}</p>
+
+	{% endfor %}
+	{% endblock %}
+	</body>
+
