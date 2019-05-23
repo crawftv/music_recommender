@@ -97,6 +97,8 @@ venv.bak/
 # Rope project settings
 .ropeproject
 
+genius_crawler/song_list_tuple
+
 # mkdocs documentation
 /site
 
