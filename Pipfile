@@ -4,16 +4,16 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+jupyter = "*"
+vaex = "*"
+pillow = "*"
+psutil = "*"
+pandas = "*"
+numpy = "*"
+gensim = "*"
+cython = "*"
 
 [packages]
-annoy = "*"
-fuzzywuzzy = {extras = ["speedup"],version = "*"}
-pandas = "*"
-flask = "*"
-boto3 = "*"
-python-dotenv = "*"
-python-decouple = "*"
-gunicorn = "*"
 
 [requires]
 python_version = "3.6"
