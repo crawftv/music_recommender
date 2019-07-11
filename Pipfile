@@ -4,7 +4,6 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-jupyter = "*"
 vaex = "*"
 pillow = "*"
 psutil = "*"
@@ -12,6 +11,18 @@ pandas = "*"
 numpy = "*"
 gensim = "*"
 cython = "*"
+torchbiggraph = "==1.dev1"
+jupyter = "*"
+networkx = "*"
+scikit-learn = "*"
+blackcellmagic = "*"
+black = "==19.3b0"
+python-decouple = "*"
+requests = "*"
+asyncio = "*"
+nest-asyncio = "*"
+aiohttp = "*"
+bs4 = "*"
 
 [packages]
 
