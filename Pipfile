@@ -25,6 +25,7 @@ aiohttp = "*"
 bs4 = "*"
 
 [packages]
+elasticsearch = "*"
 
 [requires]
 python_version = "3.6"
