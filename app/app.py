@@ -1,22 +1,16 @@
 from flask import Flask, render_template, request
-import pickle
-from fuzzywuzzy import process
+from elasticsearch import Elasticsearch
 from annoy import AnnoyIndex
 import boto3
 from decouple import config
 def create_app():
     app = Flask(__name__)
-    filename = "songs_df"
-    infile = open(filename,"rb")
-    songs1 = pickle.load(infile)
-    infile.close()
-    u = AnnoyIndex(300)
-    s3_resource = boto3.resource('s3',
-            aws_access_key_id=config("ACCESS_ID"),
-            aws_secret_access_key = config("ACCESS_KEY"))
-    s3_resource.Object('crawftv-music-recommender','songs.ann').download_file('songs1.ann')
-    u.load('songs1.ann')
 
+    b = AnnoyIndex(200) 
+    b.load("../songs.ann")
+    
+    	   
+ 
     @app.route('/')
     def root():
         return render_template('root.html')
@@ -24,9 +18,20 @@ def create_app():
     @app.route('/search', methods = ["GET"])
     def search():
         search = request.values["search"]
-        search = process.extractOne(search, songs1["song_artist"])[2]
-        playlist = u.get_nns_by_item(search,10)
-        playlist = [ songs1["url"][i] for i in playlist]
-        return  render_template("search.html",playlist=playlist)
+        return make_playlist(search)
 
     return app
+
+def make_playlist(search):
+    query = es.search(
+        index="song-index", body={"query": {"match": {"song-identifier": search}}}
+    )["hits"]["hits"][0]["_source"]["annoy-id"]
+    query = b.get_nns_by_item(q[0]["annoy-id"], 10)
+    return list(
+        map(
+            lambda x: es.get(index="song-index", doc_type="song-doc", id=x)["_source"][
+                "song-identifier"
+            ],
+            query,
+        )
+    )
