@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html>
 	<head>
-<link rel="stylesheet" href="https://unpkg.com/picnic"> 
+		<link rel="stylesheet" href="https://unpkg.com/picnic"> 
 	</head>
 
 	<body>
+	<h3>Playlist</h3>
 	{% block content %}
 	
 	{% for p in playlist %}
 	
-	<p>{{p}}</p>
+	<ul><a href={{p.url}}>{{p.identifier}}</a></ul>
 
 	{% endfor %}
 	{% endblock %}
 	</body>
-
+</html>

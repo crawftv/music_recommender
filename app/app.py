@@ -6,35 +6,52 @@ from decouple import config
 
 app = Flask(__name__)
 b = AnnoyIndex(200)
-b.load("songs.ann")
+b.load("app/songs.ann")
 
 
-def create_app():
-    @app.route("/")
-    def root():
-        return render_template("root.html")
+@app.route("/")
+def root():
+    return render_template("root.html")
 
-    @app.route("/search", methods=["GET"])
-    def search():
-        search = request.values["search"]
-        return make_playlist(search)
 
-    return app
+@app.route("/search", methods=["GET"])
+def search():
+    search = request.values["search"]
+    playlist = make_playlist(search)
+    return render_template("search.html", playlist=playlist)
 
 
 def make_playlist(search):
-    query = es.search(
+    es = Elasticsearch(config("ELASTIC_SEARCH_DOMAIN"))
+    es_query = es.search(
         index="song-index", body={"query": {"match": {"song-identifier": search}}}
     )["hits"]["hits"][0]["_source"]["annoy-id"]
-    query = b.get_nns_by_item(q[0]["annoy-id"], 10)
-    return list(
+
+    q = [
+        {
+            "song-identifier": i["_source"]["song-identifier"],
+            "annoy-id": i["_source"]["annoy-id"],
+        }
+        for i in es.search(
+            index="song-index", body={"query": {"match": {"song-identifier": search}}}
+        )["hits"]["hits"]
+    ]
+    annoy_query = b.get_nns_by_item(q[0]["annoy-id"], 10)
+
+    playlist = list(
         map(
             lambda x: es.get(index="song-index", doc_type="song-doc", id=x)["_source"][
                 "song-identifier"
             ],
-            query,
+            annoy_query,
         )
     )
+    playlist = [
+        {"identifier": i, "url": "https://genius.com/" + i + "-lyrics"}
+        for i in playlist
+    ]
+
+    return playlist
 
 
 if __name__ == "__main__":
