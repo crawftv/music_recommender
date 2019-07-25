@@ -1,12 +1,12 @@
 from flask import Flask, render_template, request
 from elasticsearch import Elasticsearch
 from annoy import AnnoyIndex
-import boto3
 from decouple import config
+import certifi
 
 app = Flask(__name__)
 b = AnnoyIndex(200)
-b.load("app/songs.ann")
+b.load("songs.ann")
 
 
 @app.route("/")
@@ -22,7 +22,12 @@ def search():
 
 
 def make_playlist(search):
-    es = Elasticsearch(config("ELASTIC_SEARCH_DOMAIN"))
+    es = Elasticsearch(
+        config("ELASTIC_SEARCH_DOMAIN"),
+        use_ssl=True,
+        verify_certs=True,
+        ca_certs=certifi.where(),
+    )
     es_query = es.search(
         index="song-index", body={"query": {"match": {"song-identifier": search}}}
     )["hits"]["hits"][0]["_source"]["annoy-id"]
