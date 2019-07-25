@@ -27,6 +27,7 @@ bs4 = "*"
 [packages]
 elasticsearch = "*"
 annoy = "==1.15.2"
+flask = "*"
 
 [requires]
 python_version = "3.6"
