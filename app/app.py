@@ -3,24 +3,24 @@ from elasticsearch import Elasticsearch
 from annoy import AnnoyIndex
 import boto3
 from decouple import config
+
+app = Flask(__name__)
+b = AnnoyIndex(200)
+b.load("songs.ann")
+
+
 def create_app():
-    app = Flask(__name__)
-
-    b = AnnoyIndex(200) 
-    b.load("../songs.ann")
-    
-    	   
- 
-    @app.route('/')
+    @app.route("/")
     def root():
-        return render_template('root.html')
+        return render_template("root.html")
 
-    @app.route('/search', methods = ["GET"])
+    @app.route("/search", methods=["GET"])
     def search():
         search = request.values["search"]
         return make_playlist(search)
 
     return app
+
 
 def make_playlist(search):
     query = es.search(
@@ -35,3 +35,7 @@ def make_playlist(search):
             query,
         )
     )
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0")
