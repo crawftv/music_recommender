@@ -1,4 +1,4 @@
-aiohttp==3.5.4
+aiohttp==3.8.1
 aplus==0.11.0
 appdirs==1.4.3
 astropy==3.2
